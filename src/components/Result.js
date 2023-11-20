@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from 'framer-motion';
-import salesforce from '../images/salesforce-icon.png';
+
 
 const Result = () => {
     return (

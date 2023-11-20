@@ -18,6 +18,10 @@ function Header(props) {
         navigate('/content-test');
     }
 
+    const navigateToLink = () => {
+        navigate('/link-test');
+    }
+
     return (
         <header>
             <div className="container">
@@ -34,9 +38,10 @@ function Header(props) {
                             <li>
                                 <button className="customButton mx-2" onClick={navigateToContent}>Content Testing<span className='spans'></span></button>
                             </li>}
-                        <li>
-                            <button className="customButton mx-2">Link Testing<span className='spans'></span></button>
-                        </li>
+                        {window.location.pathname !== '/link-test' &&
+                            <li>
+                                <button onClick={navigateToLink} className="customButton mx-2">Link Testing<span className='spans'></span></button>
+                            </li>}
                     </ul>
                 </div>
                 <div className="overlay"></div>

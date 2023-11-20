@@ -1,70 +1,26 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import Header from '../Header';
 import Footer from '../Footer';
-import CcheckerContent from '../ContentChecker Content/CcheckerContent';
+import LinkTestingContent from '../LinkTestingContent/LinkTestingContent';
 import { motion } from 'framer-motion';
 import panda from '../../images/einstein.png';
-import { diff_match_patch } from 'diff-match-patch';
-import ContextFile from '../backendLogic/ContextFile';
 
-
-function ContentTestingPage(props) {
-
-    const context = useContext(ContextFile);
-    const { setLinks } = context;
+function LinkTestingPage(props) {
 
     const [emailFile, setEmailFile] = useState('');
 
-    const [prompt, setPrompt] = useState(false);
-    const [smallLoading, setSmallLoading] = useState(false);
-
-    const [showResult, setShowResult] = useState(false);
-
-    const [text, setText] = useState('');
-
-    const [para1, setPara1] = useState('');
-    const [para2, setPara2] = useState('');
-
-
-    function compareParagraphs(acceptanceCriteria, paragraphToCheck) {
-        const dmp = new diff_match_patch();
-        const diffs = dmp.diff_main(acceptanceCriteria, paragraphToCheck);
-        dmp.diff_cleanupSemantic(diffs);
-    
-        let resultAcceptanceCriteria = '';
-    
-        for (const [operation, text] of diffs) {
-            if (operation === 0) {
-                // Unchanged part
-                resultAcceptanceCriteria += text;
-            } else if (operation === -1) {
-                // Deleted part (difference)
-                resultAcceptanceCriteria += `<span style="background-color: yellow;">${text}</span>`;
-            }
-        }
-    
-        return {
-            acceptanceCriteria: resultAcceptanceCriteria,
-            paragraphToCheck : paragraphToCheck
-        };
+    const handleTest = (links) => {
+        localStorage.setItem('extractedLinks', JSON.stringify(links));
+        links.forEach(element => {
+            window.open(element, '_blank');
+        });
     }
 
-    const handleTest = (filteredContent) => {
-        setPrompt(false);
-        setSmallLoading(true);
-        let content = filteredContent;
-        let ac = text;
-        console.log('ac', ac);
-        console.log('content', content);
-        const difference = compareParagraphs(ac, content);
-       // console.log(difference.paragraph1);
-       // console.log(difference.paragraph2);
-        setPara1(difference.acceptanceCriteria);
-        setPara2(difference.paragraphToCheck);
-        setTimeout(() => {
-            setSmallLoading(false);
-            setShowResult(true);
-        }, 3000)
+    const handleSameEmail = () => {
+         let links = JSON.parse(localStorage.getItem('extractedLinks'));
+         links.forEach(element => {
+            window.open(element, '_blank');
+        });
     }
 
     const handleFileChange = (files) => {
@@ -86,20 +42,20 @@ function ContentTestingPage(props) {
 
                 ////getting the text and subject content of email and storing it into local storage to use further for content testing
                 const textContent = doc.body.textContent; //.replace(/\s+/g, ' ').trim()
-               // console.log(textContent);
+                // console.log(textContent);
 
                 ////getting the subject from the email
                 const subjectRegex = /Subject:\s+\[Test\]:(.*?)(?:\n|\r|$)/;
                 const subjectMatch = textContent.match(subjectRegex);
                 const subject = subjectMatch ? subjectMatch[1].trim() : 'No Subject Found';
-               // console.log("SUBJECT ", subject);
+                // console.log("SUBJECT ", subject);
                 localStorage.setItem('subject', subject);
 
                 ///getting the preheader
                 const preHEaderRegEx = /Subject:\s+\[Test\]:(.*?)(?:\s{2,}\n)([\s\S]*?)\s{2,}View/;
                 const preHeaderMatch = textContent.match(preHEaderRegEx);
                 const preHeader = preHeaderMatch ? preHeaderMatch[2].trim() : 'No Preheader Found';
-               // console.log("PREHEADER ", preHeader);
+                // console.log("PREHEADER ", preHeader);
                 localStorage.setItem('pre-header', preHeader);
 
                 ////merging the text all together after view online
@@ -107,15 +63,13 @@ function ContentTestingPage(props) {
                 const filteredRegEx = /View Online\s([\s\S]*)/;
                 const filteredMatch = mergedText.match(filteredRegEx);
                 const filteredContent = filteredMatch ? filteredMatch[1] : 'No Content Found';
-               // console.log("FILTERED ", filteredContent);
+                // console.log("FILTERED ", filteredContent);
                 localStorage.setItem('emailContent', filteredContent);
 
                 const extractedLinks = Array.from(anchorTags).map((anchor) =>
                     decodeURIComponent(anchor.href)
                 );
-                localStorage.setItem('extractedLinks', JSON.stringify(extractedLinks));
-                setLinks(extractedLinks);
-                handleTest(filteredContent);
+                handleTest(extractedLinks);
             };
             reader.readAsText(file);
         } else {
@@ -124,10 +78,9 @@ function ContentTestingPage(props) {
         }
     };
 
-
     return (
         <>
-            <div id='utm-main-page' className={`utm-parent ${prompt ? 'blur-the-bg' : ''}`}>
+            <div>
                 <main id="mains">
                     <div
                         className={`big-wrapper ${props.dark ? 'dark' : 'light'
@@ -138,14 +91,19 @@ function ContentTestingPage(props) {
                             copyActive={props.copyActive}
                             toggleMenu={props.toggleMenu}
                         />
-                        <CcheckerContent setPrompt={setPrompt} smallLoading={smallLoading} setSmallLoading={setSmallLoading} text={text} setText={setText} para1={para1} para2={para2} showResult={showResult} />
+                        <LinkTestingContent
+                            dark={props.dark}
+                            menuActive={props.menuActive}
+                            copyActive={props.copyActive}
+                            toggleMenu={props.toggleMenu}
+                            toggleAnimation={props.toggleAnimation}
+                        />
                         <Footer toggleAnimation={props.toggleAnimation} dark={props.dark} />
                     </div>
                 </main>
-            </div>
-            {prompt &&
                 <div className={`result-parent ${props.dark ? 'dark' : 'light'
                     } ${props.menuActive ? 'active' : ''} ${props.copyActive ? 'copy' : ''}`}>
+
                     <motion.div className='verification-card'
                         initial={{ opacity: 0, scale: 0.6 }}
                         animate={{ opacity: 1, scale: 0.6, display: 'block' }}
@@ -178,7 +136,7 @@ function ContentTestingPage(props) {
                             </div>
                             <div className='button-div'>
                                 {localStorage.getItem('emailName') && <div className='buttonMy'>
-                                    <button onClick={() => {handleTest(localStorage.getItem('emailContent'))}} className='same-button'>Same Email</button>
+                                    <button onClick={handleSameEmail} className='same-button'>Same Email</button>
                                 </div>}
                                 <div className='buttonMy'>
                                     <input value={emailFile} onChange={(e) => { setEmailFile(e.target.value); handleFileChange(e.target.files[0]); localStorage.setItem('emailName', e.target.value) }} id='file-input' name='email file' type='file' accept='.htm' className='image-upload' />
@@ -187,9 +145,10 @@ function ContentTestingPage(props) {
                             </div>
                         </div>
                     </motion.div>
-                </div>}
+                </div>
+            </div>
         </>
-    );
+    )
 }
 
-export default ContentTestingPage;
+export default LinkTestingPage

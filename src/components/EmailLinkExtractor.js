@@ -44,6 +44,7 @@ function EmailLinkExtractor() {
   }, [links]);
 
   const handleValidate = async (e) => {
+    
     e.preventDefault();
     const response = await fetch(
       `http://localhost:5000/test`,
@@ -59,6 +60,17 @@ function EmailLinkExtractor() {
     if (response.ok) {
       const jsonData = await response.json(); // Parse JSON response from the server
       console.log(jsonData); // Log the JSON data received from the server
+      const shahil = [];
+      jsonData.forEach((link) => {
+        if (link.includes('utm_')) {
+          if (!link.includes("CPC") && !link.includes("whatsapp") && !link.includes("snapchat")) {
+            shahil.push(link);
+            return true;
+          }
+        }
+        return false;
+      })
+      console.log('shahil', shahil);
     } else {
       console.error("Request failed with status: " + response.status);
     }

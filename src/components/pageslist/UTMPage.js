@@ -183,7 +183,7 @@ function UTMPage(props) {
                             <table className="styled-table">
                                 <thead>
                                     <tr>
-                                        <th>Link Name</th>
+                                        <th>UTM Term</th>
                                         <th>UTM Parameter</th>
                                         <th>Expected Value</th>
                                         <th>Actual Value</th>

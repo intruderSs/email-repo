@@ -10,13 +10,6 @@ function UtmCheckerContent(props) {
 
   const { parseUTMParameters, setLinks } = context;
 
-  const [autoText] = useTypewriter({
-    words: ['Test UTM Params...'],
-    loop: {},
-    typeSpeed: 120,
-    deleteSpeed: 50
-  })
-
   const [filteredLinks, setFilteredLinks] = useState([]);
 
   const [acceptanceCriteria, setAcceptanceCriteria] = useState('');
@@ -32,6 +25,8 @@ function UtmCheckerContent(props) {
   ///the utm and links and further proceed with the api call
   const handleSubmit = (e) => {
     e.preventDefault();
+    localStorage.setItem('emailName', emailFile);
+
     const validUtm = utmPattern.test(acceptanceCriteria);
     if (validUtm) {
       filteredLinks.forEach(link => {
@@ -71,13 +66,35 @@ function UtmCheckerContent(props) {
         //console.log(doc);
 
         ////getting the text and subject content of email and storing it into local storage to use further for content testing
-        const textContent = doc.body.textContent;
-        console.log(textContent);
-        
+        const textContent = doc.body.textContent; //.replace(/\s+/g, ' ').trim()
+       // console.log(textContent);
+
+        ////getting the subject from the email
+        const subjectRegex = /Subject:\s+\[Test\]:(.*?)(?:\n|\r|$)/;
+        const subjectMatch = textContent.match(subjectRegex);
+        const subject = subjectMatch ? subjectMatch[1].trim() : 'No Subject Found';
+      //  console.log("SUBJECT ", subject);
+        localStorage.setItem('subject', subject);
+
+        ///getting the preheader
+        const preHEaderRegEx = /Subject:\s+\[Test\]:(.*?)(?:\s{2,}\n)([\s\S]*?)\s{2,}View/;
+        const preHeaderMatch = textContent.match(preHEaderRegEx);
+        const preHeader = preHeaderMatch ? preHeaderMatch[2].trim() : 'No Preheader Found';
+       // console.log("PREHEADER ", preHeader);
+        localStorage.setItem('pre-header', preHeader);
+
+        ////merging the text all together after view online
+        const mergedText = textContent.replace(/\s+/g, ' ').trim();
+        const filteredRegEx = /View Online\s([\s\S]*)/;
+        const filteredMatch = mergedText.match(filteredRegEx);
+        const filteredContent = filteredMatch ? filteredMatch[1] : 'No Content Found';
+       // console.log("FILTERED ",filteredContent);
+        localStorage.setItem('emailContent', filteredContent);
 
         const extractedLinks = Array.from(anchorTags).map((anchor) =>
           decodeURIComponent(anchor.href)
         );
+        localStorage.setItem('extractedLinks', JSON.stringify(extractedLinks));
         setLinks(extractedLinks);
       };
       reader.readAsText(file);
@@ -95,7 +112,7 @@ function UtmCheckerContent(props) {
           <div className='forms-container'>
             <div className='signin-signup'>
               <div action="" className='sign-in-form'>
-                <h2 className='title'><span>{autoText} </span><Cursor cursorStyle='>' cursorColor={props.dark ? '#FF6C22' : '#0D9DDA'} /></h2>
+                <h2 className='title'><span>Test UTM Params...</span></h2>
                 <div className='input-field'>
                   <i className='fas fa-link'></i>
                   <input value={acceptanceCriteria} onChange={(e) => setAcceptanceCriteria(e.target.value)} name="utm parameters" type='text' placeholder='Acceptance Criteria'></input>

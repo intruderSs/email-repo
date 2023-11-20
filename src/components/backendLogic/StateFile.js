@@ -89,14 +89,14 @@ const StateFile = (props) => {
 
     //////logic to cross check each and every link with utm parameters
     function validateEachUtmParameters(link, acc) {
-       // console.log(link.replace(/\?.*?utm/g,'?utm'));
-        const url = new URL(link.replace(/\?.*?utm/g,'?utm'));
+        // console.log(link.replace(/\?.*?utm/g,'?utm'));
+        const url = new URL(link.replace(/\?.*?utm/g, '?utm'));
         //console.log(url);
         const searchParams = Object.fromEntries(url.searchParams.entries());
-       // console.log(searchParams);
+        // console.log(searchParams);
         const errors = [];
         const errorMain = [];
-       // console.log(searchParams);
+        // console.log(searchParams);
 
         for (const param in acc) {
             if (searchParams[param] !== acc[param]) {

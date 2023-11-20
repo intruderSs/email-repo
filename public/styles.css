@@ -1172,6 +1172,213 @@ tbody {
 
 }
 
+/*Image*/
 
+.small-loading .bigParent {
+  display: flex;
+  justify-content: center;
+  background-color: #f1f8fc;
+  align-items: center;
+  width: 50%;
+  height: 60vh;
+  transform: translate(80%, 0%);
+}
 
+.dark .small-loading .bigParent {
+  display: flex;
+  justify-content: center;
+  background-color: #192e3a;
+  align-items: center;
+  width: 50%;
+  height: 60vh;
+  transform: translate(80%, 0%);
+}
 
+.small-loading .first {
+  animation: 1s grow ease-out alternate infinite;
+}
+
+.small-loading .second {
+  animation: 1s grow ease-out alternate infinite;
+  animation-delay: 0.25s;
+}
+
+.small-loading .third {
+  animation: 1s grow ease-out alternate infinite;
+  animation-delay: 0.425s;
+}
+
+@keyframes grow {
+  0% {
+      width: 0;
+      height: 0;
+  }
+
+  100% {
+      width: 100px;
+      height: 100px;
+  }
+}
+
+.shifted {
+  background-color: #ffffff90;
+  width: 40%;
+  max-width: 350px;
+  max-height: 500px;
+  position: absolute;
+  transform: translate(-210%, -60%);
+  top: 50%;
+  left: 50%;
+  padding: 50px 30px;
+  box-shadow: 0 20px 35px rgba(0,0,0,0.05);
+  border-radius: 7px;
+  transition: all 0.5s ease; 
+}
+
+.shifted .image-container {
+  width: 90%;
+  margin: 0 auto 30px auto;
+}
+
+.shifted .image-container img {
+  display: block;
+  position: relative;
+  width: 80%;
+  max-width: 300px;
+  box-shadow: 0 20px 35px rgba(0,0,0,0.05);
+  max-height: 200px;
+  margin: auto;
+}
+
+.container-img {
+  background-color: #ffffff90;
+  width: 40%;
+  min-width: 450px;
+  max-height: 570px;
+  position: absolute;
+  transform: translate(-50%, -45%);
+  top: 50%;
+  left: 50%;
+  padding: 50px 30px;
+  box-shadow: 0 20px 35px rgba(0,0,0,0.05);
+  border-radius: 7px;
+  transition: all 0.5s ease; 
+}
+
+.image-container {
+  width: 90%;
+  margin: 0 auto 30px auto;
+}
+
+.image-container img {
+  display: block;
+  position: relative;
+  max-width: 400px;
+  box-shadow: 0 20px 35px rgba(0,0,0,0.05);
+  max-height: 350px;
+  margin: auto;
+}
+
+figcaption {
+  margin: 20px 0 30px 0;
+  text-align: center;
+  color: #2a292a;
+}
+
+.image-upload {
+  display: none;
+}
+
+.upload-label {
+  display: block;
+  position: relative;
+  background-color: #0D9DDA;
+  color: #ffffff;
+  font-size: 18px;
+  text-align: center;
+  width: 250px;
+  padding: 12px 0;
+  border-radius: 5px;
+  margin: auto;
+  cursor: pointer;
+  letter-spacing: .25px;
+  transition: 0.2s 0s ease-in-out;
+}
+
+.upload-label:hover {
+  letter-spacing: 2.75px;
+  transition: 0.2s 0s ease-in-out;
+}
+
+.panels-container-einstein {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.left-panel-einstein {
+  pointer-events: all;
+  padding: 3rem 0% 2rem 12%; 
+  transform: translate(107%, -5%);
+}
+
+.prompt-msg {
+  padding: 0;
+  margin-top: 65px;
+  margin-left:65px;
+  font-size: 45px;
+}
+
+.button-div {
+  position: absolute;
+  display: flex;
+  grid-row: 2;
+  margin: 20px;
+  left: 0%;
+  top: 50%;
+}
+
+.same-button {
+  padding: 12px;
+  width: 200px;
+  border-radius: 5px;
+  background-color: #0D9DDA;
+  color: #fff;
+  font-size: 18px;
+  border: none;
+  letter-spacing: .25px;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.same-button:hover {
+  letter-spacing: 2.75px;
+  transition: 0.2s;
+}
+
+.buttonMy {
+  margin: 10px 40px;
+}
+
+.sales-force p {
+  padding: 20px;
+  margin-left: 55px;
+  margin-top: -10px;
+  font-size: 28px;
+  color: #0D9DDA;
+}
+
+.content-result-div {
+  background-color: #fff;
+  max-width: 900px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px
+  rgba(0, 0, 0, 0.22);
+  transform: translate(60%, 0%);
+  padding: 20px;
+}
