@@ -35,7 +35,6 @@ const App = () => {
             <Route exact path="/utm-test" element={<UTMPage toggleAnimation={toggleAnimation} toggleMenu={toggleMenu} dark={dark} menuActive={menuActive} copyActive={copyActive} />}></Route>
             <Route exact path="/content-test" element={<ContentTestingPage toggleAnimation={toggleAnimation} toggleMenu={toggleMenu} dark={dark} menuActive={menuActive} copyActive={copyActive} />}></Route>
             <Route exact path="/link-test" element={<LinkTestingPage toggleAnimation={toggleAnimation} toggleMenu={toggleMenu} dark={dark} menuActive={menuActive} copyActive={copyActive} />}></Route>
-            <Route exact path="/email" element={<EmailLinkExtractor toggleAnimation={toggleAnimation} toggleMenu={toggleMenu} dark={dark} menuActive={menuActive} copyActive={copyActive} />}></Route>
           </Routes>
         </StateFile>
       </BrowserRouter>

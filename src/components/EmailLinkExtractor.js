@@ -4,6 +4,7 @@ function EmailLinkExtractor() {
   const [links, setLinks] = useState([]);
 
   const [filteredLinks, setFilteredLinks] = useState([]);
+  const [htmlContent, setHtmlContent] = useState('');
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -16,6 +17,8 @@ function EmailLinkExtractor() {
         const parser = new DOMParser();
         const doc = parser.parseFromString(emailContent, "text/html");
 
+        setHtmlContent(emailContent);
+
         // Extract and decode links from anchor tags
         const anchorTags = doc.querySelectorAll("a");
 
@@ -23,6 +26,11 @@ function EmailLinkExtractor() {
           decodeURIComponent(anchor.href)
         );
         setLinks(extractedLinks);
+
+        const names = Array.from(anchorTags).map((anchor) =>
+          decodeURIComponent(anchor.title)
+        );
+        console.log(names);
       };
       reader.readAsText(file);
     }
@@ -35,7 +43,8 @@ function EmailLinkExtractor() {
         !element.includes("view.explore") &&
         !element.includes("profile_center") &&
         !element.includes("subscription_center") &&
-        !element.includes("unsub_center")
+        !element.includes("unsub_center") &&
+        !element.includes("aka.ms")
       ) {
         filtered.push(element);
       }
@@ -44,17 +53,17 @@ function EmailLinkExtractor() {
   }, [links]);
 
   const handleValidate = async (e) => {
-    
+
     e.preventDefault();
     const response = await fetch(
-      `http://localhost:5000/test`,
+      `https://6o4jy472i0.execute-api.ap-south-1.amazonaws.com/dev/links/getUtmAppendedLinks`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
-        body: JSON.stringify({ links : filteredLinks })
+        body: JSON.stringify({ links: filteredLinks })
       }
     );
     if (response.ok) {
@@ -102,6 +111,9 @@ function EmailLinkExtractor() {
 
   return (
     <>
+      <div>
+        <div dangerouslySetInnerHTML={{ __html: htmlContent.trim() }} />
+      </div>
       <div>
         <input type="file" accept=".htm" onChange={handleFileChange} />
         <div>

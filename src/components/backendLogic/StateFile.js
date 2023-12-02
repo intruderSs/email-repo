@@ -49,7 +49,7 @@ const StateFile = (props) => {
         let ut = utmObject;
         console.log('API call initiated');
         const response = await fetch(
-            `http://localhost:5000/test`,
+            `https://6o4jy472i0.execute-api.ap-south-1.amazonaws.com/dev/links/getUtmAppendedLinks`,
             {
                 method: "POST",
                 headers: {
@@ -78,7 +78,8 @@ const StateFile = (props) => {
                     !element.includes("view.explore") &&
                     !element.includes("profile_center") &&
                     !element.includes("subscription_center") &&
-                    !element.includes("unsub_center")
+                    !element.includes("unsub_center") &&
+                    !element.includes("aka.ms")
                 ) {
                     filtered.push(element);
                 }

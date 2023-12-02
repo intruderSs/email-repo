@@ -32,20 +32,24 @@ function ContentTestingPage(props) {
         dmp.diff_cleanupSemantic(diffs);
     
         let resultAcceptanceCriteria = '';
+        let emailC = '';
     
         for (const [operation, text] of diffs) {
             if (operation === 0) {
                 // Unchanged part
                 resultAcceptanceCriteria += text;
+                emailC += text;
             } else if (operation === -1) {
                 // Deleted part (difference)
                 resultAcceptanceCriteria += `<span style="background-color: yellow;">${text}</span>`;
+            } else if (operation === 1) {
+                emailC += `<span style="background-color: red;">${text}</span>`;
             }
         }
     
         return {
             acceptanceCriteria: resultAcceptanceCriteria,
-            paragraphToCheck : paragraphToCheck
+            paragraphToCheck : emailC
         };
     }
 
